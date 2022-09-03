@@ -103,6 +103,13 @@ function reducer(state, { type, payload }) {
           initial: false,
         };
       if (state.currentOperand.includes(".")) return state;
+      if (state.overwrite)
+        return {
+          ...state,
+          currentOperand: "0.",
+          expression: state.expression + "0.",
+          overwrite: false,
+        };
       return {
         ...state,
         currentOperand: state.currentOperand + ".",
