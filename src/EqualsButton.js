@@ -2,10 +2,12 @@ import React from "react";
 import { ACTIONS } from "./App";
 
 export function evaluate(expressionString) {
-  //match negative decimals, negative ints, decimals, ints, multiply sign, division sign respectively(ignore plus sign)
+  //match negative exponentials, exponentials, negative decimals, negative ints, decimals, ints, multiply sign, division sign respectively(ignore plus sign)
   let splitted = expressionString
     .replace(/--/g, "+")
-    .match(/-\d+\.\d+|--\d+|-\d+|\d+\.\d+|\d+|×|÷/g);
+    .match(
+      /-\d+\.\d+e-\d+|-\d+e-\d+|\d+\.\d+e-\d+|\d+e-\d+|-\d+\.\d+|--\d+|-\d+|\d+\.\d+|\d+|×|÷/g
+    );
   let converted = splitted.map((item) => {
     return item == "×" || item == "÷" ? item : parseFloat(item);
   });
@@ -29,7 +31,6 @@ export function evaluate(expressionString) {
   let result = converted.reduce((sum, num) => {
     return sum + num;
   }, 0);
-
   return Math.round(result * 1000000000000) / 1000000000000;
 }
 
