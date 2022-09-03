@@ -6,16 +6,16 @@ export function evaluate(expressionString) {
   let splitted = expressionString
     .replace(/--/g, "+")
     .match(
-      /-\d+\.\d+e-\d+|-\d+e-\d+|\d+\.\d+e-\d+|\d+e-\d+|-\d+\.\d+|--\d+|-\d+|\d+\.\d+|\d+|×|÷/g
+      /-\d+\.\d+e[-+]\d+|-\d+e[-+]\d+|\d+\.\d+e[-+]\d+|\d+e[-+]\d+|-\d+\.\d+|--\d+|-\d+|\d+\.\d+|\d+|×|÷/g
     );
   let converted = splitted.map((item) => {
-    return item == "×" || item == "÷" ? item : parseFloat(item);
+    return item === "×" || item === "÷" ? item : parseFloat(item);
   });
 
   //Process multiply and division sign
   for (let i = 0; i < converted.length; i++) {
     if (["×", "÷"].includes(converted[i + 1])) {
-      if (converted[i + 1] == "×") {
+      if (converted[i + 1] === "×") {
         converted[i + 2] = converted[i] * converted[i + 2];
         converted[i] = 0;
         converted[i + 1] = 0;

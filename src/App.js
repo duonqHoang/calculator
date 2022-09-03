@@ -28,7 +28,7 @@ function reducer(state, { type, payload }) {
     case ACTIONS.DELETE:
       if (state.initial) return state;
       if (state.expression.includes("=")) return INITIALSTATE;
-      if (state.expression.length == 1) return INITIALSTATE;
+      if (state.expression.length === 1) return INITIALSTATE;
       if (/[-+×÷]\d$/.test(state.expression)) {
         return {
           ...state,
@@ -72,7 +72,7 @@ function reducer(state, { type, payload }) {
           overwrite: false,
           initial: false,
         };
-      if (state.currentOperand == "0" && payload.digit == "0") return state;
+      if (state.currentOperand === "0" && payload.digit === "0") return state;
       if (state.overwrite)
         return {
           ...state,
@@ -138,20 +138,20 @@ function reducer(state, { type, payload }) {
           expression: state.expression + payload.operator,
           overwrite: true,
         };
-      if (/\d[-+×÷]$/.test(state.expression) && payload.operator == "-")
+      if (/\d[-+×÷]$/.test(state.expression) && payload.operator === "-")
         return {
           ...state,
           currentOperand: "-",
           expression: state.expression + payload.operator,
         };
-      if (/[-+×÷]+$/.test(state.expression) && payload.operator != "-") {
+      if (/[-+×÷]+$/.test(state.expression) && payload.operator !== "-") {
         return {
           ...state,
           currentOperand: payload.operator,
           expression: state.expression.replace(/[-+×÷]+$/, payload.operator),
         };
       }
-
+      return state;
     case ACTIONS.EVALUATE:
       if (state.initial)
         return {
@@ -175,8 +175,10 @@ function reducer(state, { type, payload }) {
 }
 
 function App() {
-  const [{ currentOperand, expression, overwrite, initial }, dispatch] =
-    useReducer(reducer, INITIALSTATE);
+  const [{ currentOperand, expression }, dispatch] = useReducer(
+    reducer,
+    INITIALSTATE
+  );
 
   return (
     <>
